@@ -5,60 +5,56 @@
 #25/10/2018
 
 
-#Importation de modules
-import random
-import re
+import os
+from random import randrange
 import signal
+from time import sleep
+import re
+import random
+import sys
 
+regex = re.compile('[0-9]')
 
-#Regex
-pattern = re.compile('^([0-9]|10)$')
+#generation du nombre aléatoire
+genenombre=random.randint(0, 100)
 
-#Var
-coup = 0
-win = False
-
-#Generation d'un nombre random
-randomNum = int(random.randint(0,10))
-
-#Fonction qui affiche la solution et au revoir
-def message():
-    return print('Au revoir! La solution était {0}'.format(randomNum))
+#Si Ctrl+C
+def end_game(sig, frame):
+    ecrire('\n Et hop on quitte proprement svp ')
     exit()
-
- #Ecrire dans un file
-def write_in_file(msg):
-  file = open("plusoumoins.txt", "w")
-  file.write(msg)
-  file.close()
-
-#Lire dans un file
-def read_in_file():
-  file = open("plusoumoins.txt", "r")
-  msg = file.readline().strip()
-  file.close()
-  return msg
-
-#Fonction si CTRL + C
-def quitGame(sig, frame):
-        print('\nEt on quitte ça proprement svp!')
-        exit()
-
-signal.signal(signal.SIGINT, quitGame)
+signal.signal(signal.SIGINT, end_game)
 
 
-userNum = write_in_file('Insérez un nombre entre 0 et 10 : ' )
+#on lit dans le fichier texte
+def lire():
+    file = open("plusoumoins.txt", "r")
+    msg = file.readline().strip()
+    file.close()
+    return msg
 
+# Fonctions qui écrire une réponse dans le fichier texte
+def ecrire(msg):
+    file = open("plusoumoins.txt", "w")
+    file.write(msg)
+    file.close()
 
-while win is False :
-    userNum = read_in_file()
-    if userNum == 10:
-        break
-    elif userNum > randomNum:
-        write_in_file('Trop grand ')
-    elif userNum < randomNum:
-        write_in_file('Trop petit ')
-    #Sinon on affiche win, on set le end en win
-    else:
-        write_in_file(message())
-        end = True
+#message de bienvenu
+ecrire('Entrez un nombre entre 0 et 100 !')
+
+def jeux(finBoucle):
+    while(finBoucle is False):
+        saisie = lire()
+
+        if(regex.match(saisie)):
+            saisie = int(saisie)
+
+            if(saisie > genenombre):
+                ecrire("C'est moins")
+
+            elif(saisie < genenombre):
+                ecrire("C'est plus")
+            else:
+                ecrire('Felicitation\nLa solution etait '+str(genenombre)+'\nAu revoir !')
+                finBoucle = True
+finBoucle = False
+jeux(finBoucle)
