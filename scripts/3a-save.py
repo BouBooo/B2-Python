@@ -5,13 +5,20 @@
 # Import des modules
 import signal
 import shutil
+from shutil import make_archive
 import gzip
 import os
 import sys
-import subprocess
 
 
+chemin_arr = os.path.expanduser('/root/data/')
+chemin_dep = os.path.expanduser('/root/B2-Python/scripts/')
+nom_archive = os.path.expanduser('/root/backup')
 
-if os.access(path_data, os.W_OK and os.R_OK):
-	#On crée l'archive
-	shutil.make_archive(os.path.expanduser('/root/B2-Python/data/'), 'gztar', path_directory = os.path.expanduser('/root/B2-Python/scripts'))
+try:
+	os.path.exists(chemin_arr + '/backup.tar.gz')
+	make_archive(nom_archive, 'gztar', chemin_dep)
+	shutil.move(nom_archive + '.tar.gz', chemin_arr)
+except OSError:
+	sys.stderr.write('Le fichier existe déjà')
+	raise
