@@ -52,13 +52,13 @@ userNum = write_in_file('Insérez un nombre entre 0 et 10 : ' )
 
 while win is False :
     userNum = read_in_file()
-    if userNum > 10:
+    if userNum == 10:
         break
     elif userNum > randomNum:
         write_in_file('Trop grand ')
     elif userNum < randomNum:
         write_in_file('Trop petit ')
+    #Sinon on affiche win, on set le end en win
     else:
         write_in_file(message())
-        #Gagné
-        win = True
+        end = True

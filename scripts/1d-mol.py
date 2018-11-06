@@ -1,5 +1,5 @@
 #!/usr/bin/python3.6
-#1d-mol.py
+#1a-add.py
 #XIMENES CLEMENT/NICOLAS FLORENT
 #Jeu du plus ou moins
 #23/10/2018
