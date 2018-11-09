@@ -1,6 +1,11 @@
 #!/usr/bin/python3.6
 
 
+#3a-save.py
+#Effectuer une sauvegarde compressée et archivée dans un repertoire spécifique
+#09/11/2018
+#NICOLAS Florent / XIMENES Clément 
+
 
 # Import des modules
 import shutil
@@ -11,12 +16,12 @@ import os
 import sys
 import datetime
 
-#Fonction si CTRL + C
-#def quitProg(sig, frame):
-#        print('\nEt on quitte ça proprement svp!')
-#        exit()
 
-#signal.signal(signal.SIGINT, quitProg)
+# Fonction si CTRL + C
+# def quitProg(sig, frame):
+# 	print('\nEt on quitte ça proprement svp!')
+#       exit()
+# signal.signal(signal.SIGINT, quitProg)
 
 
 chemin_arr = os.path.expanduser('/root/data/')
@@ -29,13 +34,14 @@ def createArchive():
 	shutil.move(nom_archive + '.tar.gz', chemin_arr)
 	sys.stdout.write('Une archive a bien été crée. Elle se trouve dans' + chemin_arr + '. \n')
 
+
 def deleteArchive():
 	os.remove('/root/data/backup.tar.gz')
 	os.remove('/root/backup.tar.gz')
 	sys.stdout.write('Votre ancienne sauvegarde a bien été supprimée.\n')
 
 
-#Verif du droit d'écriture sur le fichier
+# Verif du droit d'écriture sur le fichier
 if os.access(chemin_arr, os.W_OK):
 	#Création archive	
 	try:
@@ -68,6 +74,6 @@ else:
 	sys.stderr.write('Vous n\'avez pas les droits nécessaire\n')
 	
 
-#except OSError:
-#	sys.stderr.write('Le fichier existe déjà')
-#	raise
+# except OSError:
+# 	sys.stderr.write('Le fichier existe déjà')
+# 	raise
