@@ -1,1 +1,1 @@
-Insérez un nombre entre 0 et 10 : 
+Entrez un nombre entre 0 et 100 !

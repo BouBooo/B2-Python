@@ -7,7 +7,7 @@
 
 import os
 from random import randrange
-import signal
+#import signal
 from time import sleep
 import re
 import random
@@ -19,10 +19,10 @@ regex = re.compile('[0-9]')
 genenombre=random.randint(0, 100)
 
 #Si Ctrl+C
-def end_game(sig, frame):
-    ecrire('\n Et hop on quitte proprement svp ')
-    exit()
-signal.signal(signal.SIGINT, end_game)
+#def end_game(sig, frame):
+#    ecrire('\n Et hop on quitte proprement svp ')
+#    exit()
+#signal.signal(signal.SIGINT, end_game)
 
 
 #on lit dans le fichier texte
