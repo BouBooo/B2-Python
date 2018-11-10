@@ -31,45 +31,61 @@ nom_archive = os.path.expanduser('/root/backup')
 
 def createArchive():
 	make_archive(nom_archive, 'gztar', chemin_dep)
-	shutil.move(nom_archive + '.tar.gz', chemin_arr)
-	sys.stdout.write('Une archive a bien été crée. Elle se trouve dans' + chemin_arr + '. \n')
 
+def moveArchive():
+	shutil.move(nom_archive + '.tar.gz', chemin_arr)
 
 def deleteArchive():
 	os.remove('/root/data/backup.tar.gz')
 	os.remove('/root/backup.tar.gz')
-	sys.stdout.write('Votre ancienne sauvegarde a bien été supprimée.\n')
-
 
 # Verif du droit d'écriture sur le fichier
 if os.access(chemin_arr, os.W_OK):
-	#Création archive	
-	try:
-		createArchive()
-	#Une sauvegarde du meme existe déjà
-	except:
-		sys.stderr.write('Une sauvegarde du même nom existe déjà \n')
-		userDelete = input('Voulez vous supprimer cette sauvegarde? (yes/no) \n')
-		#L'user veut remplacer l'ancienne
-		#Suppression de l'ancienne
-		if userDelete == 'yes':
+	#Création archive
+	createArchive()
+	
+	if os.path.exists(chemin_arr + 'backup.tar.gz'):
+		# On va lire à l'interieur de la save existante
+		with gzip.open(chemin_arr + '/backup.tar.gz', 'rb') as f:
+			old_backup = f.read()
+           	# On va lire la nouvelle save maintenant
+		with gzip.open(nom_archive + '.tar.gz', 'rb') as f:
+                	new_backup = f.read()
+
+		# On compare les deux save
+		if old_backup != new_backup:
+		# On supprime l'ancienne et on sauvegarde la nouvelle
 			deleteArchive()
-			userCreate = input('Voulez vous créer une nouvelle sauvegarde? (yes/no) \n')
-			#Création de la nouvelle sauvegarde
-			if userCreate == 'yes':
-				createArchive()
-			#L'ancienne est supprimée mais l'user n'en effectue pas de nouvelle. (chelou)
-			elif userCreate == 'no':
-				sys.stdout.write('Quel interêt de supprimer l\'ancienne dans ce cas...\n')
-			#Saisie incorrecte
-			else:
-				sys.stderr('Une erreur est survenue durant la création de la sauvegarde. \n')
-		#L'user ne souhaite pas remplacer la sauvegarder existante
-		elif userDelete == 'no':
-			sys.stdout.write('Votre ancienne sauvegarde n\'a pas été supprimée.\n')
-		#Erreur de saisie
+			sys.stdout.write('Votre ancienne sauvegarde a bien été supprimée et remplacée par la nouvelle.\n')
 		else:
-			sys.stderr.write('Une erreur de saisie a été détectée.\n')			
+			sys.stderr.write('Une sauvegarde similaire existe déjà \n')
+			userDelete = input('Voulez vous supprimer cette sauvegarde? (yes/no) \n')
+                	#L'user veut remplacer l'ancienne
+                	#Suppression de l'ancienne
+			if userDelete == 'yes':
+				deleteArchive()
+				userCreate = input('Voulez vous créer une nouvelle sauvegarde? (yes/no) \n')
+                        	#Création de la nouvelle sauvegarde
+				if userCreate == 'yes':
+					createArchive()
+					moveArchive()
+					sys.stdout.write('Une nouvelle archive a été créée, dans le repertoire : ' + chemin_arr + '. \n')
+                        	#L'ancienne est supprimée mais l'user n'en effectue pas de nouvelle. (chelou)
+				elif userCreate == 'no':
+					sys.stdout.write('Quel interêt de supprimer l\'ancienne dans ce cas...\n')
+                        	#Saisie incorrecte
+				else:
+					sys.stderr.write('Une erreur est survenue durant la création de la sauvegarde. \n')
+                	#L'user ne souhaite pas remplacer la sauvegarder existante
+			elif userDelete == 'no':
+				sys.stdout.write('Votre ancienne sauvegarde n\'a pas été supprimée.\n')
+                	#Erreur de saisie
+			else:
+				sys.stderr.write('Une erreur de saisie a été détectée.\n')
+
+	else:
+		moveArchive()
+		sys.stdout.write('Votre archive a bien été déplacée dans le répertoire: ' + chemin_arr + '. \n') 
 else:
 	sys.stderr.write('Vous n\'avez pas les droits nécessaire\n')
 	
