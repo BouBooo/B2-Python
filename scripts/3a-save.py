@@ -10,7 +10,7 @@
 # Import des modules
 import shutil
 from shutil import make_archive
-#import signal
+import signal
 import gzip
 import os
 import sys
@@ -18,10 +18,10 @@ import datetime
 
 
 # Fonction si CTRL + C
-# def quitProg(sig, frame):
-# 	print('\nEt on quitte ça proprement svp!')
-#       exit()
-# signal.signal(signal.SIGINT, quitProg)
+def quitProg(sig, frame):
+	print('\nEt on quitte ça proprement svp!')
+ 	exit()
+signal.signal(signal.SIGINT, quitProg)
 
 
 chemin_arr = os.path.expanduser('/root/data/')
@@ -45,10 +45,9 @@ if os.access(chemin_arr, os.W_OK):
 	createArchive()
 	
 	if os.path.exists(chemin_arr + 'backup.tar.gz'):
-		# On va lire à l'interieur de la save existante
+		#Dezip des backup et lecture 
 		with gzip.open(chemin_arr + '/backup.tar.gz', 'rb') as f:
 			old_backup = f.read()
-           	# On va lire la nouvelle save maintenant
 		with gzip.open(nom_archive + '.tar.gz', 'rb') as f:
                 	new_backup = f.read()
 
@@ -56,7 +55,7 @@ if os.access(chemin_arr, os.W_OK):
 		if old_backup != new_backup:
 		# On supprime l'ancienne et on sauvegarde la nouvelle
 			deleteArchive()
-			sys.stdout.write('Votre ancienne sauvegarde a bien été supprimée et remplacée par la nouvelle.\n')
+			sys.stdout.write('Votre ancienne sauvegarde étant différent de la nouvelle, a bien été supprimée et remplacée par la nouvelle.\n')
 		else:
 			sys.stderr.write('Une sauvegarde similaire existe déjà \n')
 			userDelete = input('Voulez vous supprimer cette sauvegarde? (yes/no) \n')
