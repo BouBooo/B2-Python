@@ -1,5 +1,10 @@
 #!/usr/bin/python3.6
 
+#2a-mol.py
+#Plus ou moins
+#NICOLAS Florent / XIMENES Clément
+#28/10.2018
+
 # Import
 import random
 import re
