@@ -1,7 +1,7 @@
 #!/usr/bin/python3.6
-#1a-add.py
+#2b-auto.py
 #XIMENES CLEMENT/NICOLAS FLORENT
-#Jeu du plus ou moins
+#Auto resolve less or more
 #23/10/2018
 
 #Import des modules
