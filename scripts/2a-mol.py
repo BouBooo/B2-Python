@@ -3,7 +3,7 @@
 
 #2a-mol.py
 #XIMENES CLEMENT/NICOLAS FLORENT
-#Jeu du plus ou moins
+#Jeu du plus ou moins, en lisant dans un fichier gamefile.txt
 #23/10/2018
 
 #Import des modules
